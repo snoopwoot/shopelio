@@ -113,15 +113,6 @@
             box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
         }
         
-        .btn-warning {
-            background: #ed8936;
-            color: white;
-        }
-        
-        .btn-warning:hover {
-            background: #dd6b20;
-        }
-        
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -149,56 +140,136 @@
             font-size: 1.1em;
         }
         
-        .products-table {
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .product-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
         }
         
-        table {
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .product-images {
+            position: relative;
             width: 100%;
-            border-collapse: collapse;
+            height: 200px;
+            background: #f7fafc;
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+            overflow-x: auto;
         }
         
-        thead {
+        .product-images::-webkit-scrollbar {
+            height: 5px;
+        }
+        
+        .product-images::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+        
+        .product-img-thumb {
+            min-width: 120px;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .no-images {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e0;
+            font-size: 50px;
+        }
+        
+        .product-number {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: #f5576c;
             color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 5;
         }
         
-        th {
-            padding: 15px;
-            text-align: left;
+        .product-content {
+            padding: 20px;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: #e6f0ff;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
             font-weight: 600;
+            margin-bottom: 10px;
         }
         
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 10px 0;
         }
         
-        tbody tr:hover {
-            background: #f7fafc;
-        }
-        
-        .product-link-cell {
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 13px;
+        .product-desc {
             color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        .product-link {
+            display: block;
+            background: #f7fafc;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #666;
+            margin: 10px 0;
+            word-break: break-all;
+            max-height: 40px;
+            overflow: hidden;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
         
         .btn-small {
-            padding: 8px 15px;
+            flex: 1;
+            padding: 10px;
             font-size: 14px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
-            margin-right: 5px;
         }
         
         .btn-edit {
@@ -231,6 +302,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow-y: auto;
         }
         
         .modal.active {
@@ -241,10 +313,11 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            margin: auto;
         }
         
         .modal-header {
@@ -289,6 +362,59 @@
             min-height: 80px;
         }
         
+        .image-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #f5576c;
+            background: #fff5f7;
+        }
+        
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .image-preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
         .modal-actions {
             display: flex;
             gap: 10px;
@@ -298,17 +424,10 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-        }
-        
-        .empty-state h3 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        
-        .empty-state p {
-            color: #666;
-            font-size: 16px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            grid-column: 1/-1;
         }
         
         .toast {
@@ -340,14 +459,6 @@
             }
         }
         
-        .badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -363,12 +474,8 @@
                 width: 100%;
             }
             
-            .products-table {
-                overflow-x: auto;
-            }
-            
-            table {
-                min-width: 800px;
+            .products-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -377,7 +484,7 @@
     <div class="container">
         <div class="header">
             <h1>🔧 Admin Panel</h1>
-            <p>Kelola produk affiliate Shopee Anda</p>
+            <p>Kelola produk affiliate Shopee dengan mudah</p>
         </div>
         
         <div class="stats">
@@ -397,26 +504,10 @@
                 <option value="">Semua Kategori</option>
             </select>
             <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Produk</button>
-            <button class="btn btn-secondary" onclick="exportData()">💾 Export Data</button>
-            <button class="btn btn-secondary" onclick="importData()">📂 Import Data</button>
-            <button class="btn btn-warning" onclick="generateCode()">📝 Generate Code</button>
+            <button class="btn btn-secondary" onclick="downloadJSON()">💾 Download JSON</button>
         </div>
         
-        <div class="products-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 60px;">No.</th>
-                        <th>Nama Produk</th>
-                        <th>Kategori</th>
-                        <th>Link Affiliate</th>
-                        <th style="width: 180px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="productsTableBody">
-                </tbody>
-            </table>
-        </div>
+        <div class="products-grid" id="productsGrid"></div>
     </div>
     
     <div class="modal" id="productModal">
@@ -429,7 +520,7 @@
                 </div>
                 <div class="form-group">
                     <label>Kategori *</label>
-                    <input type="text" id="productCategory" list="categoryList" required placeholder="Misal: Fashion Pria, Elektronik, dll">
+                    <input type="text" id="productCategory" list="categoryList" required placeholder="Misal: Fashion Pria, Elektronik">
                     <datalist id="categoryList"></datalist>
                 </div>
                 <div class="form-group">
@@ -440,83 +531,74 @@
                     <label>Deskripsi (Opsional)</label>
                     <textarea id="productDesc" placeholder="Deskripsi singkat produk"></textarea>
                 </div>
+                <div class="form-group">
+                    <label>Foto Produk (URL) - Satu per baris</label>
+                    <div class="image-upload-area" onclick="document.getElementById('imageURLs').focus()">
+                        📸 Paste URL foto produk di bawah (satu URL per baris)
+                    </div>
+                    <textarea id="imageURLs" placeholder="https://contoh.com/foto1.jpg
+https://contoh.com/foto2.jpg
+https://contoh.com/foto3.jpg" style="min-height: 120px;"></textarea>
+                    <small style="color: #666;">💡 Tips: Copy link foto dari Shopee atau upload ke imgbb.com lalu paste URL-nya di sini</small>
+                </div>
+                <div class="image-preview-grid" id="imagePreview"></div>
                 <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Simpan</button>
-                    <button type="button" class="btn" style="background: #e2e8f0; color: #333; flex: 1;" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Simpan</button>
+                    <button type="button" class="btn" style="background: #e2e8f0; color: #333; flex: 1;" onclick="closeModal()">❌ Batal</button>
                 </div>
             </form>
         </div>
     </div>
     
-    <div class="modal" id="codeModal">
-        <div class="modal-content" style="max-width: 800px;">
-            <div class="modal-header">📝 Copy Code untuk index.html</div>
-            <p style="color: #666; margin-bottom: 15px;">Copy code di bawah ini dan paste di bagian <code style="background: #f7fafc; padding: 2px 6px; border-radius: 4px;">products = [...]</code> di file <strong>index.html</strong> Anda:</p>
-            <textarea id="generatedCode" readonly style="width: 100%; height: 300px; font-family: monospace; font-size: 13px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="copyGeneratedCode()">📋 Copy Code</button>
-                <button class="btn" style="background: #e2e8f0; color: #333; flex: 1;" onclick="closeCodeModal()">Tutup</button>
-            </div>
-        </div>
-    </div>
-    
     <div class="toast" id="toast"></div>
-    
-    <input type="file" id="importFile" style="display: none;" accept=".json">
     
     <script>
         let products = [];
         let editingId = null;
         
-        // Load data from localStorage
+        // Load data
         function loadData() {
             const saved = localStorage.getItem('shopeeProducts');
             if (saved) {
                 products = JSON.parse(saved);
             } else {
-                // Sample data
                 products = [
                     {
                         id: 1,
                         name: "Sepatu Sneakers Pria",
                         category: "Fashion Pria",
                         link: "https://shope.ee/contoh-link-1",
-                        desc: "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari"
+                        desc: "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari",
+                        images: ["https://via.placeholder.com/300x250/667eea/ffffff?text=Sepatu"]
                     },
                     {
                         id: 2,
                         name: "Tas Ransel Wanita",
                         category: "Fashion Wanita",
                         link: "https://shope.ee/contoh-link-2",
-                        desc: "Tas ransel stylish dengan banyak kompartemen"
-                    },
-                    {
-                        id: 3,
-                        name: "Kaos Polos Premium",
-                        category: "Fashion Pria",
-                        link: "https://shope.ee/contoh-link-3",
-                        desc: "Kaos polos cotton combed 30s berbagai warna"
+                        desc: "Tas ransel stylish dengan banyak kompartemen",
+                        images: ["https://via.placeholder.com/300x250/764ba2/ffffff?text=Tas"]
                     }
                 ];
                 saveData();
             }
         }
         
-        // Save data to localStorage
+        // Save data
         function saveData() {
             localStorage.setItem('shopeeProducts', JSON.stringify(products));
         }
         
-        // Update statistics
+        // Update stats
         function updateStats() {
             document.getElementById('totalProducts').textContent = products.length;
             const categories = [...new Set(products.map(p => p.category))];
             document.getElementById('totalCategories').textContent = categories.length;
         }
         
-        // Render products table
+        // Render products
         function renderProducts() {
-            const tbody = document.getElementById('productsTableBody');
+            const grid = document.getElementById('productsGrid');
             const searchTerm = document.getElementById('searchBox').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
             
@@ -528,40 +610,46 @@
             });
             
             if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <h3>Belum ada produk</h3>
-                            <p>Klik "Tambah Produk" untuk mulai menambahkan produk</p>
-                        </td>
-                    </tr>
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Belum ada produk</h3>
+                        <p>Klik "Tambah Produk" untuk mulai</p>
+                    </div>
                 `;
                 updateStats();
                 updateCategoryFilter();
                 return;
             }
             
-            tbody.innerHTML = filtered.map(p => `
-                <tr>
-                    <td style="text-align: center; font-weight: bold; color: #f5576c;">${p.id}</td>
-                    <td>
-                        <strong>${p.name}</strong>
-                        ${p.desc ? `<br><small style="color: #666;">${p.desc}</small>` : ''}
-                    </td>
-                    <td><span class="badge" style="background: #e6f0ff; color: #667eea;">${p.category}</span></td>
-                    <td class="product-link-cell">${p.link}</td>
-                    <td>
-                        <button class="btn-small btn-edit" onclick="editProduct(${p.id})">✏️ Edit</button>
-                        <button class="btn-small btn-delete" onclick="deleteProduct(${p.id})">🗑️ Hapus</button>
-                    </td>
-                </tr>
-            `).join('');
+            grid.innerHTML = filtered.map(p => {
+                const images = p.images && p.images.length > 0 ? p.images : [];
+                return `
+                    <div class="product-card">
+                        <div class="product-images">
+                            <div class="product-number">${p.id}</div>
+                            ${images.length > 0 ? images.map(img => `
+                                <img src="${img}" class="product-img-thumb" alt="${p.name}" onerror="this.src='https://via.placeholder.com/120/cbd5e0/ffffff?text=Error'">
+                            `).join('') : '<div class="no-images">📦</div>'}
+                        </div>
+                        <div class="product-content">
+                            <div class="product-category">${p.category}</div>
+                            <div class="product-name">${p.name}</div>
+                            ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
+                            <div class="product-link">${p.link}</div>
+                            <div class="product-actions">
+                                <button class="btn-small btn-edit" onclick="editProduct(${p.id})">✏️ Edit</button>
+                                <button class="btn-small btn-delete" onclick="deleteProduct(${p.id})">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
             
             updateStats();
             updateCategoryFilter();
         }
         
-        // Update category filter dropdown
+        // Update category filter
         function updateCategoryFilter() {
             const categories = [...new Set(products.map(p => p.category))];
             const filter = document.getElementById('categoryFilter');
@@ -572,16 +660,28 @@
             
             filter.value = currentValue;
             
-            // Update datalist
             const datalist = document.getElementById('categoryList');
             datalist.innerHTML = categories.map(c => `<option value="${c}">`).join('');
         }
+        
+        // Preview images from URLs
+        document.getElementById('imageURLs').addEventListener('input', function() {
+            const urls = this.value.split('\n').filter(url => url.trim());
+            const preview = document.getElementById('imagePreview');
+            
+            preview.innerHTML = urls.map((url, i) => `
+                <div class="image-preview-item">
+                    <img src="${url.trim()}" alt="Preview ${i+1}" onerror="this.src='https://via.placeholder.com/100/f56565/ffffff?text=Error'">
+                </div>
+            `).join('');
+        });
         
         // Open add modal
         function openAddModal() {
             editingId = null;
             document.getElementById('modalTitle').textContent = 'Tambah Produk';
             document.getElementById('productForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
             document.getElementById('productModal').classList.add('active');
         }
         
@@ -596,6 +696,12 @@
             document.getElementById('productCategory').value = product.category;
             document.getElementById('productLink').value = product.link;
             document.getElementById('productDesc').value = product.desc || '';
+            
+            if (product.images && product.images.length > 0) {
+                document.getElementById('imageURLs').value = product.images.join('\n');
+                document.getElementById('imageURLs').dispatchEvent(new Event('input'));
+            }
+            
             document.getElementById('productModal').classList.add('active');
         }
         
@@ -612,19 +718,19 @@
             const category = document.getElementById('productCategory').value;
             const link = document.getElementById('productLink').value;
             const desc = document.getElementById('productDesc').value;
+            const imageURLs = document.getElementById('imageURLs').value.split('\n').filter(url => url.trim()).map(url => url.trim());
             
             if (editingId !== null) {
-                // Edit existing
                 const product = products.find(p => p.id === editingId);
                 product.name = name;
                 product.category = category;
                 product.link = link;
                 product.desc = desc;
+                product.images = imageURLs;
                 showToast('✅ Produk berhasil diupdate!');
             } else {
-                // Add new
                 const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.push({ id: newId, name, category, link, desc });
+                products.push({ id: newId, name, category, link, desc, images: imageURLs });
                 showToast('✅ Produk berhasil ditambahkan!');
             }
             
@@ -643,27 +749,19 @@
             }
         }
         
-        // Generate code for index.html
-        function generateCode() {
-            const code = 'let products = ' + JSON.stringify(products, null, 4) + ';';
-            document.getElementById('generatedCode').value = code;
-            document.getElementById('codeModal').classList.add('active');
+        // Download JSON
+        function downloadJSON() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'products.json';
+            link.click();
+            showToast('✅ File products.json berhasil didownload!');
         }
         
-        // Copy generated code
-        function copyGeneratedCode() {
-            const textarea = document.getElementById('generatedCode');
-            textarea.select();
-            document.execCommand('copy');
-            showToast('✅ Code berhasil dicopy! Paste di index.html Anda');
-        }
-        
-        // Close code modal
-        function closeCodeModal() {
-            document.getElementById('codeModal').classList.remove('active');
-        }
-        
-        // Show toast notification
+        // Show toast
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -673,46 +771,6 @@
             }, 3000);
         }
         
-        // Export data
-        function exportData() {
-            const dataStr = JSON.stringify(products, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `shopee-products-${new Date().getTime()}.json`;
-            link.click();
-            showToast('✅ Data berhasil diexport!');
-        }
-        
-        // Import data
-        function importData() {
-            document.getElementById('importFile').click();
-        }
-        
-        document.getElementById('importFile').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        products = imported;
-                        saveData();
-                        renderProducts();
-                        showToast('✅ Data berhasil diimport!');
-                    } else {
-                        alert('❌ Format file tidak valid!');
-                    }
-                } catch (err) {
-                    alert('❌ Gagal membaca file!');
-                }
-            };
-            reader.readAsText(file);
-        });
-        
         // Search functionality
         document.getElementById('searchBox').addEventListener('input', renderProducts);
         document.getElementById('categoryFilter').addEventListener('change', renderProducts);
@@ -721,12 +779,6 @@
         document.getElementById('productModal').addEventListener('click', (e) => {
             if (e.target.id === 'productModal') {
                 closeModal();
-            }
-        });
-        
-        document.getElementById('codeModal').addEventListener('click', (e) => {
-            if (e.target.id === 'codeModal') {
-                closeCodeModal();
             }
         });
         
