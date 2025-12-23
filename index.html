@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Produk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .category-filter {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .product-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: #e6f0ff;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .btn-copy {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-copy:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .empty-state h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .toast.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box,
+            .category-filter {
+                width: 100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ Katalog Produk</h1>
+            <p>Temukan produk pilihan dengan harga terbaik</p>
+        </div>
+        
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Cari produk...">
+            <select class="category-filter" id="categoryFilter">
+                <option value="">Semua Kategori</option>
+            </select>
+        </div>
+        
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+    
+    <div class="toast" id="toast"></div>
+    
+    <script>
+        // Data produk (nanti isi dari JSON atau edit langsung di sini)
+        let products = [
+            {
+                id: 1,
+                name: "Sepatu Sneakers Pria",
+                category: "Fashion Pria",
+                link: "https://shope.ee/contoh-link-1",
+                desc: "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari"
+            },
+            {
+                id: 2,
+                name: "Tas Ransel Wanita",
+                category: "Fashion Wanita",
+                link: "https://shope.ee/contoh-link-2",
+                desc: "Tas ransel stylish dengan banyak kompartemen"
+            },
+            {
+                id: 3,
+                name: "Kaos Polos Premium",
+                category: "Fashion Pria",
+                link: "https://shope.ee/contoh-link-3",
+                desc: "Kaos polos cotton combed 30s berbagai warna"
+            }
+        ];
+        
+        // Render products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            
+            let filtered = products.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(searchTerm) || 
+                                  (p.desc && p.desc.toLowerCase().includes(searchTerm));
+                const matchCategory = !categoryFilter || p.category === categoryFilter;
+                return matchSearch && matchCategory;
+            });
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <h3>Produk tidak ditemukan</h3>
+                        <p>Coba kata kunci atau kategori lain</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card">
+                    <div class="product-number">${p.id}</div>
+                    <div class="product-category">${p.category}</div>
+                    <div class="product-name">${p.name}</div>
+                    ${p.desc ? `<p style="color: #666; font-size: 14px; margin: 10px 0;">${p.desc}</p>` : ''}
+                    <button class="btn-copy" onclick="copyLink(${p.id})">🛒 Beli Sekarang (Copy Link)</button>
+                </div>
+            `).join('');
+            
+            updateCategoryFilter();
+        }
+        
+        // Update category filter dropdown
+        function updateCategoryFilter() {
+            const categories = [...new Set(products.map(p => p.category))];
+            const filter = document.getElementById('categoryFilter');
+            const currentValue = filter.value;
+            
+            filter.innerHTML = '<option value="">Semua Kategori</option>' + 
+                categories.map(c => `<option value="${c}">${c}</option>`).join('');
+            
+            filter.value = currentValue;
+        }
+        
+        // Copy link
+        function copyLink(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            navigator.clipboard.writeText(product.link).then(() => {
+                showToast('Link berhasil dicopy! Silakan paste di browser untuk belanja 🛍️');
+            });
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+        
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', renderProducts);
+        document.getElementById('categoryFilter').addEventListener('change', renderProducts);
+        
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>
