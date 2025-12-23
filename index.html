@@ -83,7 +83,7 @@
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
@@ -91,11 +91,11 @@
         .product-card {
             background: white;
             border-radius: 15px;
-            padding: 20px;
+            overflow: hidden;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             transition: all 0.3s;
+            cursor: pointer;
             position: relative;
-            overflow: hidden;
         }
         
         .product-card:hover {
@@ -109,14 +109,107 @@
             right: 15px;
             background: #667eea;
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
+            z-index: 10;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: #f7fafc;
+        }
+        
+        .slider-container {
+            display: flex;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .slider-image {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slider-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 5;
+            transition: all 0.3s;
+        }
+        
+        .slider-nav:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .slider-nav.prev {
+            left: 10px;
+        }
+        
+        .slider-nav.next {
+            right: 10px;
+        }
+        
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 60px;
+        }
+        
+        .product-content {
+            padding: 20px;
         }
         
         .product-category {
@@ -137,24 +230,24 @@
             margin: 10px 0;
         }
         
-        .btn-copy {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 16px;
-            background: #48bb78;
-            color: white;
+        .product-desc {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+            line-height: 1.5;
         }
         
-        .btn-copy:hover {
-            background: #38a169;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        .shopee-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ee4d2d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
         }
         
         .empty-state {
@@ -163,6 +256,7 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            grid-column: 1/-1;
         }
         
         .empty-state h3 {
@@ -176,33 +270,11 @@
             font-size: 16px;
         }
         
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #48bb78;
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
             color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            z-index: 2000;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-        
-        .toast.active {
-            display: block;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            font-size: 20px;
         }
         
         @media (max-width: 768px) {
@@ -229,7 +301,7 @@
     <div class="container">
         <div class="header">
             <h1>🛍️ Katalog Produk</h1>
-            <p>Temukan produk pilihan dengan harga terbaik</p>
+            <p>Klik produk untuk langsung belanja di Shopee!</p>
         </div>
         
         <div class="controls">
@@ -239,36 +311,61 @@
             </select>
         </div>
         
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="products-grid" id="productsGrid">
+            <div class="loading">⏳ Memuat produk...</div>
+        </div>
     </div>
     
-    <div class="toast" id="toast"></div>
-    
     <script>
-        // Data produk (nanti isi dari JSON atau edit langsung di sini)
-        let products = [
-            {
-                id: 1,
-                name: "Sepatu Sneakers Pria",
-                category: "Fashion Pria",
-                link: "https://shope.ee/contoh-link-1",
-                desc: "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari"
-            },
-            {
-                id: 2,
-                name: "Tas Ransel Wanita",
-                category: "Fashion Wanita",
-                link: "https://shope.ee/contoh-link-2",
-                desc: "Tas ransel stylish dengan banyak kompartemen"
-            },
-            {
-                id: 3,
-                name: "Kaos Polos Premium",
-                category: "Fashion Pria",
-                link: "https://shope.ee/contoh-link-3",
-                desc: "Kaos polos cotton combed 30s berbagai warna"
+        let products = [];
+        let currentSlides = {};
+        
+        // Load products from JSON or fallback to embedded data
+        async function loadProducts() {
+            try {
+                const response = await fetch('products.json');
+                if (response.ok) {
+                    products = await response.json();
+                } else {
+                    throw new Error('JSON not found');
+                }
+            } catch (error) {
+                // Fallback to embedded data
+                products = [
+                    {
+                        id: 1,
+                        name: "Sepatu Sneakers Pria",
+                        category: "Fashion Pria",
+                        link: "https://shope.ee/contoh-link-1",
+                        desc: "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari",
+                        images: ["https://via.placeholder.com/300x250/667eea/ffffff?text=Sepatu+1"]
+                    },
+                    {
+                        id: 2,
+                        name: "Tas Ransel Wanita",
+                        category: "Fashion Wanita",
+                        link: "https://shope.ee/contoh-link-2",
+                        desc: "Tas ransel stylish dengan banyak kompartemen",
+                        images: ["https://via.placeholder.com/300x250/764ba2/ffffff?text=Tas+1"]
+                    },
+                    {
+                        id: 3,
+                        name: "Kaos Polos Premium",
+                        category: "Fashion Pria",
+                        link: "https://shope.ee/contoh-link-3",
+                        desc: "Kaos polos cotton combed 30s berbagai warna",
+                        images: ["https://via.placeholder.com/300x250/48bb78/ffffff?text=Kaos+1"]
+                    }
+                ];
             }
-        ];
+            
+            // Initialize slide indices
+            products.forEach(p => {
+                currentSlides[p.id] = 0;
+            });
+            
+            renderProducts();
+        }
         
         // Render products
         function renderProducts() {
@@ -285,7 +382,7 @@
             
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1/-1;">
+                    <div class="empty-state">
                         <h3>Produk tidak ditemukan</h3>
                         <p>Coba kata kunci atau kategori lain</p>
                     </div>
@@ -293,17 +390,86 @@
                 return;
             }
             
-            grid.innerHTML = filtered.map(p => `
-                <div class="product-card">
-                    <div class="product-number">${p.id}</div>
-                    <div class="product-category">${p.category}</div>
-                    <div class="product-name">${p.name}</div>
-                    ${p.desc ? `<p style="color: #666; font-size: 14px; margin: 10px 0;">${p.desc}</p>` : ''}
-                    <button class="btn-copy" onclick="copyLink(${p.id})">🛒 Beli Sekarang (Copy Link)</button>
-                </div>
-            `).join('');
+            grid.innerHTML = filtered.map(p => {
+                const images = p.images && p.images.length > 0 ? p.images : [];
+                const hasImages = images.length > 0;
+                const showNav = images.length > 1;
+                
+                return `
+                    <div class="product-card" onclick="openShopee(${p.id})">
+                        <div class="product-number">${p.id}</div>
+                        <div class="image-slider">
+                            ${hasImages ? `
+                                <div class="slider-container" id="slider-${p.id}">
+                                    ${images.map(img => `
+                                        <img src="${img}" alt="${p.name}" class="slider-image" onerror="this.src='https://via.placeholder.com/300x250/667eea/ffffff?text=No+Image'">
+                                    `).join('')}
+                                </div>
+                                ${showNav ? `
+                                    <button class="slider-nav prev" onclick="event.stopPropagation(); changeSlide(${p.id}, -1)">‹</button>
+                                    <button class="slider-nav next" onclick="event.stopPropagation(); changeSlide(${p.id}, 1)">›</button>
+                                    <div class="slider-dots">
+                                        ${images.map((_, i) => `
+                                            <span class="dot ${i === 0 ? 'active' : ''}" onclick="event.stopPropagation(); goToSlide(${p.id}, ${i})"></span>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                            ` : `
+                                <div class="no-image">📦</div>
+                            `}
+                        </div>
+                        <div class="product-content">
+                            <div class="product-category">${p.category}</div>
+                            <div class="product-name">${p.name}</div>
+                            ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
+                            <div class="shopee-badge">
+                                🛒 Belanja di Shopee
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
             
             updateCategoryFilter();
+        }
+        
+        // Change slide
+        function changeSlide(productId, direction) {
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.images || product.images.length <= 1) return;
+            
+            currentSlides[productId] = (currentSlides[productId] + direction + product.images.length) % product.images.length;
+            updateSlider(productId);
+        }
+        
+        // Go to specific slide
+        function goToSlide(productId, index) {
+            currentSlides[productId] = index;
+            updateSlider(productId);
+        }
+        
+        // Update slider position
+        function updateSlider(productId) {
+            const slider = document.getElementById(`slider-${productId}`);
+            if (!slider) return;
+            
+            const offset = -currentSlides[productId] * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+            
+            // Update dots
+            const card = slider.closest('.product-card');
+            const dots = card.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlides[productId]);
+            });
+        }
+        
+        // Open Shopee link
+        function openShopee(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.link) {
+                window.open(product.link, '_blank');
+            }
         }
         
         // Update category filter dropdown
@@ -318,32 +484,12 @@
             filter.value = currentValue;
         }
         
-        // Copy link
-        function copyLink(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-            
-            navigator.clipboard.writeText(product.link).then(() => {
-                showToast('Link berhasil dicopy! Silakan paste di browser untuk belanja 🛍️');
-            });
-        }
-        
-        // Show toast notification
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('active');
-            setTimeout(() => {
-                toast.classList.remove('active');
-            }, 3000);
-        }
-        
         // Search functionality
         document.getElementById('searchBox').addEventListener('input', renderProducts);
         document.getElementById('categoryFilter').addEventListener('change', renderProducts);
         
         // Initialize
-        renderProducts();
+        loadProducts();
     </script>
 </body>
 </html>
