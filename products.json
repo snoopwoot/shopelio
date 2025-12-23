@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Sepatu Sneakers Pria",
+    "category": "Fashion Pria",
+    "link": "https://shope.ee/contoh-link-1",
+    "desc": "Sepatu sneakers casual nyaman untuk aktivitas sehari-hari"
+  },
+  {
+    "id": 2,
+    "name": "Tas Ransel Wanita",
+    "category": "Fashion Wanita",
+    "link": "https://shope.ee/contoh-link-2",
+    "desc": "Tas ransel stylish dengan banyak kompartemen"
+  },
+  {
+    "id": 3,
+    "name": "Kaos Polos Premium",
+    "category": "Fashion Pria",
+    "link": "https://shope.ee/contoh-link-3",
+    "desc": "Kaos polos cotton combed 30s berbagai warna"
+  },
+  {
+    "id": 4,
+    "name": "Makanan kucing",
+    "category": "Fashion Wanita",
+    "link": "https://shope.ee/contoh-link-4",
+    "desc": ""
+  }
+]
